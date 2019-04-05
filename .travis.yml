@@ -10,10 +10,9 @@ jobs:
   - stage: unittest
     script: cd app;python -m unittest tests.test_helloworld
   - stage: build
-    script: cd app; docker build -t boiler_plate_rest:latest .
-  - stage: publish
     script: 
-    - cd app; docker tag boiler_plate_rest ansri1980/boiler_plate_rest
+    - cd app; docker build -t boiler_plate_rest:latest .
+    - docker tag boiler_plate_rest ansri1980/boiler_plate_rest
     - docker login -u ansri1980 -p $DOCKER_PASSWORD
     - docker push ansri1980/boiler_plate_rest
 dd:
