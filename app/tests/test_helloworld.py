@@ -11,7 +11,7 @@ class boiler_plate_testcase(unittest.TestCase):
 
     def test_root_get(self):
         res = self.client.get("/")
-        self.assertIn('Hello World', res.data)
+        self.assertEqual('Hello World', res.data)
     
 if __name__ == "__main__":
     unittest.main()
