@@ -8,7 +8,7 @@ api = Api(app)
 
 class HelloWorld(Resource):
     def get(self):
-        return "Hello Worldd"
+        return "Hello World"
 
 # Expose root to call HelloWorld Resource
 api.add_resource(HelloWorld, '/')
