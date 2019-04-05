@@ -4,7 +4,10 @@ python:
 # install dependencies
 install:
     - pip install -r requirements.txt
-# Run unittests. 
-# NOTE: I have used a simple unittest.Testcase. Pytest will make this more generic. If I have time I will explore on this.
-script:
-    - cd app;python -m unittest tests.test_helloworld
+jobs:
+    include:
+        - stage: unittest
+        # Run unittests. 
+        # NOTE: I have used a simple unittest.Testcase. Pytest will make this more generic. If I have time I will explore on this.
+        script:
+            - cd app;python -m unittest tests.test_helloworld
