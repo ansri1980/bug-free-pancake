@@ -11,3 +11,5 @@ jobs:
   include:
     - stage: unittest
       script: cd app;python -m unittest tests.test_helloworld
+    - stage: build
+      script: cd app; docker build -t boiler_plate_rest:latest .
