@@ -1,15 +1,20 @@
 language: python
-python: 
-  - "2.7"
-# install dependencies
+python:
+- '2.7'
 install:
-  - pip install -r app/requirements.txt
-
+- pip install -r app/requirements.txt
 stages:
-  - unittest
+- unittest
 jobs:
   include:
-    - stage: unittest
-      script: cd app;python -m unittest tests.test_helloworld
-    - stage: build
-      script: cd app; docker build -t boiler_plate_rest:latest .
+  - stage: unittest
+    script: cd app;python -m unittest tests.test_helloworld
+  - stage: build
+    script: cd app; docker build -t boiler_plate_rest:latest .
+  - stage: publish
+    script: 
+    - cd app; docker tag boiler_plate_rest ansri1980/boiler_plate_rest
+    - docker login -u ansri1980 -p $DOCKER_PASSWORD
+    - docker push ansri1980/boiler_plate_rest
+dd:
+  secure: m2iYjUi8HdFCd45os3tH91yAoCEIH01KlPDDESrqqxwev4I5BqOo2dpS9Sn77L/CEx0eycBcRfxBtpwqtyfKJW9v8uB0WUi/PnHMLGnMzwcoQC95Wn/xoXanw3Isl18SsUVGxEcYDquYWyDE/YzcwW6+EjccgseMWyRytTNSfr2FPdY+yce4XLAmSH80aoJbPzxfgnmK6pswJG4nRa0ufRDKsG865EqDbUf700HO6ReLwQxNvFz7q91VrhcBDa5xDQEUoe70huY0t5jHYu+DrA9lBu+zKPsGl/vL5djZAsMGopkAK68iuf9KURmFZrjJsGddSnPULY+kbCSGym9qFLbvM/IG30r4XPfPq0uRhTGWBXGBbpKaeKdccbXNa2Cy/CvbnRqVRGyYuJKfu6764rlF7cEuPrvcrruBl637PUggSaYHOXUJUbJA0hxM9yfENraZd/1THeXHJbrV6FBbuBAtQZeWvA4ZHCFvV5Pl8DlbDtWk57MaYGBwnlfMBzcQaVJ64Qw1zLOiy1e3Ez7eiRQ8PR1gB6dHPXNFjMJFr5klXykFimR1CUe7WUf0t/1QfN5uq6YNg5thLo5wcpSlHbdLuP8Iv8dxj8WyLE8Gtt0a3JzabZsIuwrer5XffHaTM1x4wXRyiq4b4WSSzcKTz7uForZy7Kk6fNP1ak4R+x8=
