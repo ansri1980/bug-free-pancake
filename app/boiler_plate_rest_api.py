@@ -8,6 +8,7 @@ from logging.handlers import RotatingFileHandler
 
 app = Flask(__name__)
 api = Api(app)
+app.config['TEST'] = False
 
 class HelloWorld(Resource):
     def get(self):
