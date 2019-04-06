@@ -24,7 +24,7 @@ class Status(Resource):
         resp.status_code = 200
         return resp
  
-# Expose root to call HelloWorld Resource
+# Expose resources via api
 api.add_resource(HelloWorld, '/')
 api.add_resource(Status,'/status')
 
