@@ -3,6 +3,8 @@
 from flask import Flask
 from flask_restful import Resource, Api
 from flask import jsonify
+import logging
+from logging.handlers import RotatingFileHandler
 
 app = Flask(__name__)
 api = Api(app)
@@ -33,7 +35,12 @@ class Status(Resource):
         if app.config['TEST']:
             filename = 'lastshacommittest'
 
-        handle = open(filename, "r")
+        try:
+            handle = open(filename, "r")
+        except Exception as e:
+            app.logger.error("Error occurred when opening file " + filename)
+            app.logger.error(e)
+            raise
         l_shacommit = handle.read().rstrip()
         handle.close()
         return l_shacommit
@@ -44,5 +51,8 @@ api.add_resource(Status,'/status')
 
 # Support for both importing and standalone
 if __name__ == '__main__':
+    handler = RotatingFileHandler('app.log', maxBytes=10000, backupCount=1)
+    handler.setLevel(logging.DEBUG)
+    app.logger.addHandler(handler)
     app.run(host='0.0.0.0')
 
