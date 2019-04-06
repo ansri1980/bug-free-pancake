@@ -4,6 +4,7 @@ from flask import Flask
 from flask_restful import Resource, Api
 from flask import jsonify
 import logging
+import yaml
 from logging.handlers import RotatingFileHandler
 
 app = Flask(__name__)
@@ -21,8 +22,8 @@ class Status(Resource):
         shacommit = self.get_sha_commit()
         data = {"myapplication": 
                    [{
-                    "version": "1.0",
-                    "description": "pre-interview technical test",
+                    "version": self.version,
+                    "description": self.description,
                     "lastcommitsha": shacommit
                     }]}
           
@@ -33,6 +34,7 @@ class Status(Resource):
 
     def get_sha_commit(self):
         """ The version information is available from file lastshacommit created when building docker image. Read and return this information """
+        self.get_meta()
         filename = 'lastshacommit'
         # For unittest read from localfile
         if app.config['TEST']:
@@ -49,13 +51,24 @@ class Status(Resource):
         handle.close()
         return l_shacommit
 
-# Expose resources via api
+    def get_meta(self):
+        meta_file = "meta.yml"
+        try:
+            with open(meta_file,"r") as stream:
+                data = yaml.load(stream)
+        except Exception as e:
+            app.logger.error("Error occurred when reading yaml file " + meta_file)
+            app.logger.error(e)
+
+        self.version = data['version']
+        self.description = data['description']
+
 api.add_resource(HelloWorld, '/')
 api.add_resource(Status,'/status')
 
 # Support for both importing and standalone
 if __name__ == '__main__':
-    handler = RotatingFileHandler('app.log', maxBytes=10000, backupCount=1)
+    handler = RotatingFileHandler('app.log', maxBytes=100000, backupCount=1)
     # CAUTION: Loglevel should be set to INFO when going production
     handler.setLevel(logging.DEBUG)
     app.logger.addHandler(handler)
