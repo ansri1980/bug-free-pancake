@@ -13,7 +13,8 @@ jobs:
     - echo $TRAVIS_COMMIT
   - stage: build
     script: 
-    - cd app; docker build -t boiler_plate_rest:latest .
+    - cd app
+    - docker build --build-arg commit=$TRAVIS_COMMIT -t boiler_plate_rest:latest .
     - docker tag boiler_plate_rest ansri1980/boiler_plate_rest
     - docker login -u ansri1980 -p $DOCKER_PASSWORD
     - docker push ansri1980/boiler_plate_rest
