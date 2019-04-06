@@ -8,7 +8,9 @@ stages:
 jobs:
   include:
   - stage: unittest
-    script: cd app;python -m unittest tests.test_boiler_plate
+    script: 
+    - cd app;python -m unittest tests.test_boiler_plate
+    - echo $TRAVIS_COMMIT
   - stage: build
     script: 
     - cd app; docker build -t boiler_plate_rest:latest .
