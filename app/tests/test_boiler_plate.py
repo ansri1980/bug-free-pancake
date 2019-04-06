@@ -8,6 +8,7 @@ class boiler_plate_testcase(unittest.TestCase):
     def setUp(self):
         """ Initialise variables """
         self.appH = boiler_plate_rest_api.app
+        self.appH.config['TEST'] = True
         self.client = self.appH.test_client()
 
     def test_root_get(self):
@@ -23,7 +24,7 @@ class boiler_plate_testcase(unittest.TestCase):
                    [{
                     "version": "1.0",
                     "description": "pre-interview technical test",
-                    "lastcommitsha": "abc57858585"
+                    "lastcommitsha": "12345SHA"
                     }]}
         self.assertDictEqual(data, json.loads(res.data))
 

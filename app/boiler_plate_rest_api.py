@@ -13,17 +13,31 @@ class HelloWorld(Resource):
 
 class Status(Resource):
     def get(self):
+        shacommit = self.get_sha_commit()
         data = {"myapplication": 
                    [{
                     "version": "1.0",
                     "description": "pre-interview technical test",
-                    "lastcommitsha": "abc57858585"
+                    "lastcommitsha": shacommit
                     }]}
           
         resp = jsonify(data)
         resp.status_code = 200
         return resp
- 
+
+
+    def get_sha_commit(self):
+        """ The version information is available from file lastshacommit created when building docker image. Read and return this information """
+        filename = 'lastshacommit'
+        # For unittest read from localfile
+        if app.config['TEST']:
+            filename = 'lastshacommittest'
+
+        handle = open(filename, "r")
+        l_shacommit = handle.read().rstrip()
+        handle.close()
+        return l_shacommit
+
 # Expose resources via api
 api.add_resource(HelloWorld, '/')
 api.add_resource(Status,'/status')
