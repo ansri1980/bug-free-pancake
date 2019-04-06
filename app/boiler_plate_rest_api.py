@@ -12,10 +12,12 @@ app.config['TEST'] = False
 
 class HelloWorld(Resource):
     def get(self):
+        app.logger.info("Serving request for /")
         return 'Hello World'
 
 class Status(Resource):
     def get(self):
+        app.logger.info("Service request for /status")
         shacommit = self.get_sha_commit()
         data = {"myapplication": 
                    [{
@@ -35,6 +37,7 @@ class Status(Resource):
         # For unittest read from localfile
         if app.config['TEST']:
             filename = 'lastshacommittest'
+            app.logger.debug("App config set to TEST. Reading shacommit from file " +  filename)
 
         try:
             handle = open(filename, "r")
@@ -53,6 +56,7 @@ api.add_resource(Status,'/status')
 # Support for both importing and standalone
 if __name__ == '__main__':
     handler = RotatingFileHandler('app.log', maxBytes=10000, backupCount=1)
+    # CAUTION: Loglevel should be set to INFO when going production
     handler.setLevel(logging.DEBUG)
     app.logger.addHandler(handler)
     app.run(host='0.0.0.0')
