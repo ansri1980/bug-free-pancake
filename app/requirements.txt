@@ -1,4 +1,4 @@
 flask
 flask_restful
 pytest
-yaml
+PyYAML
